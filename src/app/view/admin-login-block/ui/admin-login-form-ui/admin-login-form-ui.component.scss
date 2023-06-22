@@ -1,0 +1,10 @@
+.login-form {
+  padding: 30px;
+  width: 300px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.4);
+
+  &__input-control {
+    display: block;
+  }
+}

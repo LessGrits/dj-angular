@@ -1,0 +1,7 @@
+<admin-login-form-ui
+  *ngIf="loaded$ | async"
+  [formError]="serverError$ | async"
+  [disabled]="loading$ | async"
+  (login)="onLogin($event)"
+></admin-login-form-ui>
+
