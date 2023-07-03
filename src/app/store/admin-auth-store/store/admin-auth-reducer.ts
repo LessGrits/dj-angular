@@ -1,10 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
-import { Login, LoginFailed, LoginSuccess } from './admin-auth.actions';
+import {
+  Login,
+  LoginFailed,
+  LoginSuccess,
+  logoutSuccess,
+} from './admin-auth.actions';
 
 export const ADMIN_AUTH_FEATURE_NAME = 'admin-auth';
 
 export interface AuthData {
   accessToken: string;
+  id: number;
+  iat: number;
+  exp: number;
 }
 export interface AdminAuthState {
   loading: boolean;
@@ -25,7 +33,7 @@ export const adminAuthReducer = createReducer(
     ...state,
     loading: true,
   })),
-  on(LoginSuccess, (state, authData: AuthData) => ({
+  on(LoginSuccess, (state, { authData }) => ({
     ...state,
     authData,
     loaded: true,
@@ -38,5 +46,9 @@ export const adminAuthReducer = createReducer(
     authData: null,
     loaded: true,
     loading: false,
+  })),
+  on(logoutSuccess, (state) => ({
+    ...state,
+    authData: null,
   }))
 );

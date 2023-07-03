@@ -8,6 +8,7 @@ import {
   getServerError,
 } from '../../../../store/admin-auth-store/store/admin-auth.selectors';
 import { Login } from '../../../../store/admin-auth-store/store/admin-auth.actions';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'admin-login-block',
@@ -21,10 +22,14 @@ export class AdminLoginBlockComponent {
     select(getServerError)
   );
 
-  constructor(private _store$: Store) {}
+  constructor(private _store$: Store, private _http: HttpClient) {}
 
-  onLogin(loginPayload: { login: string; password: string }) {
+  public onLogin(loginPayload: { login: string; password: string }) {
     console.log('onLogin', loginPayload);
     this._store$.dispatch(Login(loginPayload));
+  }
+
+  public getUserData() {
+    this._http.get('http://localhost:3000/auth/profile').subscribe(console.log);
   }
 }

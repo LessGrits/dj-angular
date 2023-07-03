@@ -19,10 +19,10 @@ export const getAuthData = createSelector(
 
 export const getAccessToken = createSelector(
   getAuthData,
-  (authData) => authData && authData.accessToken
+  (authData) => authData?.accessToken
 );
 
-export const getIsAuth = createSelector(
+export const isAuth = createSelector(
   getAccessToken,
   (accessToken) => accessToken
 );
