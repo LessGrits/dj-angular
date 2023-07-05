@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomePageComponent } from './home-page/home-page.component';
+import { GridPageComponent } from './grid-page/grid-page.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [HomePageComponent],
+  declarations: [GridPageComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
       {
         path: '',
-        pathMatch: 'full',
-        component: HomePageComponent,
+        component: GridPageComponent,
       },
     ]),
   ],
 })
-export class HomeModule {}
+export class GridModule {}

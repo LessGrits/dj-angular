@@ -17,7 +17,7 @@ export const LoginFailed = createAction(
 );
 
 export const initAdminModule = createAction('[Admin Action] init admin auth');
-
+export const logout = createAction('[Admin Action] logout');
 export const logoutSuccess = createAction('[Admin Action] logout success');
 export const extractAuthDataFromLocalStorage = createAction(
   '[Admin Action] Extract login data'

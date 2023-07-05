@@ -23,7 +23,7 @@ export interface AdminAuthState {
 
 const initialState: AdminAuthState = {
   loading: false,
-  loaded: true,
+  loaded: false,
   serverError: '',
 };
 
@@ -50,5 +50,6 @@ export const adminAuthReducer = createReducer(
   on(logoutSuccess, (state) => ({
     ...state,
     authData: null,
+    loaded: true,
   }))
 );

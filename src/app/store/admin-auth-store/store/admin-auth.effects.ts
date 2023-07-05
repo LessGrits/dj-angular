@@ -6,15 +6,18 @@ import {
   Login,
   LoginFailed,
   LoginSuccess,
+  logout,
   logoutSuccess,
 } from './admin-auth.actions';
 import {
   catchError,
+  distinctUntilChanged,
   filter,
   first,
   fromEvent,
   map,
   of,
+  skip,
   switchMap,
   tap,
   timer,
@@ -23,13 +26,15 @@ import { AdminAuthService } from '../services/admin-auth.service';
 import { select, Store } from '@ngrx/store';
 import { isAuth } from './admin-auth.selectors';
 import { AuthData } from './admin-auth-reducer';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AdminAuthEffects {
   constructor(
     private _adminAuthService: AdminAuthService,
     private _actions$: Actions,
-    private _store$: Store
+    private _store$: Store,
+    private _router: Router
   ) {}
 
   public login$ = createEffect(() =>
@@ -41,6 +46,14 @@ export class AdminAuthEffects {
           catchError((error) => of(LoginFailed({ serverError: error.message })))
         )
       )
+    )
+  );
+
+  public logout$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(logout),
+      tap(() => localStorage.removeItem('authData')),
+      map(() => logoutSuccess())
     )
   );
 
@@ -90,6 +103,22 @@ export class AdminAuthEffects {
     this._actions$.pipe(
       ofType(initAdminModule),
       switchMap(() => fromEvent(window, 'storage')),
+      map(() => extractAuthDataFromLocalStorage())
+    )
+  );
+
+  public listenAuthorizeEffect$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(initAdminModule),
+      switchMap(() =>
+        this._adminAuthService.isAuth$.pipe(
+          distinctUntilChanged(),
+          skip(1),
+          tap((isAuth) => {
+            this._router.navigateByUrl(isAuth ? '/admin' : 'admin/auth/login');
+          })
+        )
+      ),
       map(() => extractAuthDataFromLocalStorage())
     )
   );

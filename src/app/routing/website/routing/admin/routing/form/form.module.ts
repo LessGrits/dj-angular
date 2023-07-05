@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomePageComponent } from './home-page/home-page.component';
+import { FormPageComponent } from './form-page/form-page.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [HomePageComponent],
+  declarations: [FormPageComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
       {
         path: '',
-        pathMatch: 'full',
-        component: HomePageComponent,
+        component: FormPageComponent,
       },
     ]),
   ],
 })
-export class HomeModule {}
+export class FormModule {}
