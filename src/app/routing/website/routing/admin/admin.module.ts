@@ -41,6 +41,13 @@ import { AdminNavBlockModule } from '../../../../view/admin-nav-block/admin-nav-
                 (module) => module.FormModule
               ),
           },
+          {
+            path: 'profile',
+            loadChildren: () =>
+              import('./routing/profile/profile.module').then(
+                (module) => module.ProfileModule
+              ),
+          },
         ],
       },
     ]),

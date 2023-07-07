@@ -2,6 +2,9 @@
   <mat-toolbar-row>
     <span>Blog</span>
     <span class="spacer"></span>
+    <button (click)="goToProfile()" mat-button>
+      <mat-icon class="logout-icon">perm_identity</mat-icon>
+    </button>
     <button (click)="logout()" mat-button>
       <mat-icon class="logout-icon">logout</mat-icon>
     </button>

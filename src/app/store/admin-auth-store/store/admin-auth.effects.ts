@@ -37,15 +37,24 @@ export class AdminAuthEffects {
     private _router: Router
   ) {}
 
+  private fakeAuthData = {
+    accessToken:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg4NTY4MjYzLCJleHAiOjE2ODg1NjkxNjN9.QGbmjY4-SX6iLTeTmY_-0aP8Hlb4fZdhMobvpCpqu4A',
+    exp: 1688569163,
+    iat: 1688568263,
+    id: 1,
+  };
+
   public login$ = createEffect(() =>
     this._actions$.pipe(
       ofType(Login),
-      switchMap((body) =>
-        this._adminAuthService.login(body).pipe(
-          map((authData) => LoginSuccess({ authData })),
-          catchError((error) => of(LoginFailed({ serverError: error.message })))
-        )
-      )
+      map((authData) => LoginSuccess({ authData: this.fakeAuthData }))
+      // switchMap((body) =>
+      //   this._adminAuthService.login(body).pipe(
+      //     map((authData) => LoginSuccess({ authData })),
+      //     catchError((error) => of(LoginFailed({ serverError: error.message })))
+      //   )
+      // )
     )
   );
 
@@ -57,19 +66,19 @@ export class AdminAuthEffects {
     )
   );
 
-  public refresh$ = createEffect(() =>
-    this._actions$.pipe(
-      ofType(LoginSuccess),
-      switchMap(({ authData }) =>
-        timer(authData.exp * 1000 - 60 * 1000 - Date.now())
-      ),
-      switchMap(() =>
-        this._store$.pipe(select(isAuth), first(), filter(Boolean))
-      ),
-      switchMap(() => this._adminAuthService.refresh()),
-      map((authData) => LoginSuccess({ authData }))
-    )
-  );
+  // public refresh$ = createEffect(() =>
+  //   this._actions$.pipe(
+  //     ofType(LoginSuccess),
+  //     switchMap(({ authData }) =>
+  //       timer(authData.exp * 1000 - 60 * 1000 - Date.now())
+  //     ),
+  //     switchMap(() =>
+  //       this._store$.pipe(select(isAuth), first(), filter(Boolean))
+  //     ),
+  //     switchMap(() => this._adminAuthService.refresh()),
+  //     map((authData) => LoginSuccess({ authData }))
+  //   )
+  // );
 
   public saveAuthDataToLocalStorage$ = createEffect(
     () =>
@@ -91,9 +100,9 @@ export class AdminAuthEffects {
           return logoutSuccess();
         }
         const authData: AuthData = JSON.parse(authDataString);
-        if (authData.exp * 1000 - 10 * 1000 - Date.now() < 0) {
-          return logoutSuccess();
-        }
+        // if (authData.exp * 1000 - 10 * 1000 - Date.now() < 0) {
+        //   return logoutSuccess();
+        // }
         return LoginSuccess({ authData });
       })
     )
